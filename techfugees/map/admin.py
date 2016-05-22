@@ -38,7 +38,7 @@ def sync_google_data(request):
     for row in rows[2:]:
         google_spreadsheet_row_to_trip(row).save()
 
-    messages.success(request, "Synced ${0} rows".format(len(rows) - 2))
+    messages.success(request, "Synced {0} rows".format(len(rows) - 2))
 
     return redirect('/admin/')
 

@@ -11,6 +11,7 @@ class Trip(models.Model):
     end_lat = models.CharField(max_length=200)
     end_long = models.CharField(max_length=200)
     year = models.CharField(max_length=200)
+    month = models.CharField(max_length=200, blank=True, null=True)
     price = models.CharField(max_length=200)
     lower_bound = models.CharField(max_length=200)
     upper_bound = models.CharField(max_length=200)
