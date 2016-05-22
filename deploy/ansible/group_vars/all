@@ -20,7 +20,7 @@ server_locale_lang: en_US.UTF-8
 server_hostname: techfugees
 
 nginx_enabled: false
-nginx_server_name: wk-techfugees.herokuapp.com
+nginx_server_name: techfugees-map.letoosh.com
 
 mongodb_server: false
 mongodb_name: techfugees

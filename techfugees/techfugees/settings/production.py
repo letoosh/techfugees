@@ -41,7 +41,7 @@ ALLOWED_HOSTS = ["*"]
 # INSTALLED_APPS += ("", )
 
 # EMAIL
-DEFAULT_FROM_EMAIL = values.Value('techfugees<noreply@wk-techfugees.herokuapp.com>')
+DEFAULT_FROM_EMAIL = values.Value('techfugees<noreply@techfugees-map.letoosh.com>')
 EMAIL_HOST = values.Value('')
 EMAIL_HOST_PASSWORD = values.SecretValue(environ_prefix="", environ_name="EMAIL_PASSWORD")
 EMAIL_HOST_USER = values.SecretValue(environ_prefix="", environ_name="EMAIL_USERNAME")
