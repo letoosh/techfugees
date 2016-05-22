@@ -10,7 +10,7 @@ from .base import *
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # SECRET KEY
-SECRET_KEY = "thisshouldberandmon"
+SECRET_KEY = "fsmkoiu9182ehdalukeiop0-daakonjk12bh1beuidjajflqeqqwkj2j13u90fad"
 # END SECRET KEY
 
 # django-secure (turned this off but you can turn it on if you like)
@@ -36,10 +36,10 @@ ALLOWED_HOSTS = ["*"]
 # END SITE CONFIGURATION
 
 # EMAIL
-DEFAULT_FROM_EMAIL = 'techfugees<noreply@wk-techfugees.herokuapp.com>'
+DEFAULT_FROM_EMAIL = 'techfugees<noreply@techfugees.org>'
 EMAIL_HOST = 'smtp.mandrillapp.com'
-EMAIL_HOST_PASSWORD = "u8OKKxjAtNn40IALhNTVww"
-EMAIL_HOST_USER = "team@letolab.com"
+EMAIL_HOST_PASSWORD = "NuQd2fAyRPpYkviAP7XvCQ"
+EMAIL_HOST_USER = "team@techfugees.org"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 SERVER_EMAIL = EMAIL_HOST_USER
@@ -62,8 +62,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'techfugees',
         'USER': 'techfugees',
-        'PASSWORD': "mypassword",
-        'HOST': '127.0.0.1',
+        'PASSWORD': '',
+        'HOST': '',
         'PORT': '',
         'CONN_MAX_AGE': 300,
     }

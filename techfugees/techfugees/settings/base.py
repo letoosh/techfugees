@@ -81,7 +81,7 @@ TEMPLATE_DEBUG = DEBUG
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key only used for development and testing.
 #       In production, this is changed to a values.SecretValue() setting
-SECRET_KEY = "CHANGEME!!!"
+SECRET_KEY = "eqjod89yuhi131j90duaqekl2ajifubiuhqoeqwjqeiofuh781341uieada"
 # END SECRET CONFIGURATION
 
 # FIXTURE CONFIGURATION

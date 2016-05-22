@@ -9,7 +9,6 @@ from fabric.colors import red, green
 
 from ansible.inventory import Inventory
 
-
 # TODO: Change this so these settings
 # are read automatically from the ansible configuration files.
 # This invlolves reading production/staging.yml and webserver
@@ -17,7 +16,7 @@ from ansible.inventory import Inventory
 # we rely on convention
 APP_NAME = "techfugees"
 APP_USER = "techfugees"
-SSH_USER = "techfugees"
+SSH_USER = "ubuntu"
 REPO_PATH = "/srv/" + APP_NAME
 DJANGO_PATH = REPO_PATH + "/" + APP_NAME
 VIRTUALENV_PATH = "/home/{app_user}/.{app_name}/".format(
@@ -26,6 +25,7 @@ VIRTUALENV_PATH = "/home/{app_user}/.{app_name}/".format(
 PIP_BINARY = VIRTUALENV_PATH + "bin/pip"
 PYTHON_BINARY = VIRTUALENV_PATH + "bin/python"
 
+env.use_ssh_config = True
 
 @roles("webservers")
 def pull():
@@ -184,7 +184,7 @@ def coerce_bool(val):
     return val == "True"
 
 
-def provision(check="True"):
+def provision(check="False"):
     check = coerce_bool(check)
     if check:
         check_string = "--check"
