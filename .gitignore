@@ -1,6 +1,35 @@
-# python cruft
+# Basics
+*.py[cod]
 *.pyc
+__pycache__
 
-# venv-related files
-/venv/
-/activate
+# Logs
+*.log
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+# Translations
+*.mo
+*.pot
+
+# Pycharm
+.idea
+
+# Vim
+
+*~
+*.swp
+*.swo
+
+# npm
+node_modules/
+
+# Campass
+.sass-cache
+
+# Vagrant
+.vagrant/

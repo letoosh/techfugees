@@ -1,0 +1,5 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: restart celery
+  supervisorctl: name=celery state=restarted
+  sudo: yes

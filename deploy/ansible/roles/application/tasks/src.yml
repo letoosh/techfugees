@@ -1,0 +1,19 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: ensure deployment key exists
+  copy: src=deployment_key_rsa
+        dest=/home/{{ application_user }}/.ssh/id_rsa
+        mode=0600
+  sudo: yes
+  sudo_user: "{{application_user}}"
+
+- name: ensure source code is up to date
+  git: repo={{ application_repository_url }}
+       dest={{ application_path_root }}
+       version={{ application_repository_branch }}
+       force=yes
+       update=yes
+       accept_hostkey=yes
+       key_file=/home/{{ application_user }}/.ssh/id_rsa
+  sudo: yes
+  sudo_user: "{{application_user}}"

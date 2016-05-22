@@ -1,0 +1,23 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: ensure repository key is added to apt
+  apt_key: keyserver=keyserver.ubuntu.com id={{ mongodb_repository_key }} state=present
+  sudo: yes
+  register: mongodb_repository_key_added
+
+- name: ensure repository is added to apt
+  apt_repository: repo='{{ mongodb_repository_url }}' state=present
+  sudo: yes
+  register: mongodb_repository_url_added
+
+- name: ensure apt-cache is updated
+  apt: update-cache=true
+  sudo: yes
+  when: 
+    - mongodb_repository_url_added|changed
+    - mongodb_repository_url_added|success
+    - mongodb_repository_key_added|changed
+    - mongodb_repository_key_added|success
+
+- include: server.yml
+  when: mongodb_server

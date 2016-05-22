@@ -1,0 +1,38 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+server_locale_lang: en_US.UTF-8
+
+# general settings
+postgresql_user: postgres
+postgresql_group: postgres
+postgresql_version: 9.4
+postgresql_server: true
+
+# database
+postgresql_database_name: application
+postgresql_database_user: application
+postgresql_database_secret: application
+postgresql_database_host: localhost
+
+# data
+postgresql_data_directory: /postgresql
+
+# backups
+postgresql_backup_user: application
+postgresql_backup_secret: application
+postgresql_backup_enabled: true
+postgresql_backup_directory: /backups
+postgresql_backup_databases: application
+
+# server config
+# for details on this see the comments on the `ensure resource optimisation 
+# settingsare present in config` task in ../tasks/server.yml
+postgresql_config_shared_buffers: 128MB
+postgresql_config_work_mem: 1MB
+postgresql_config_checkpoint_segments: 10
+postgresql_config_checkpoint_completion_target: 0.5
+postgresql_config_effective_cache_size: 256MB
+
+#repository
+postgresql_repository_url: 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main'
+postgresql_repository_key: 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'

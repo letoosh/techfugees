@@ -1,0 +1,17 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: ensure uwsgi dependencies are installed
+  apt: pkg={{ item }} state=present
+  sudo: yes
+  with_items:
+    - libpcre3
+    - libpcre3-dev
+
+- name: ensure wsgi environment exists
+  file: dest=/var/run/{{ application_name }}/ owner={{ application_user }} state=directory
+  sudo: yes
+
+- name: ensure application wsgi settings file exists
+  template: src=wsgi.ini dest={{ application_path_root }}/wsgi.ini owner={{ application_user }}
+  sudo: yes
+  sudo_user: "{{ application_user }}"

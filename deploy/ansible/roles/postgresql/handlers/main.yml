@@ -1,0 +1,5 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: restart postgresql server
+  service: name=postgresql state=restarted
+  sudo: yes

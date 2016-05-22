@@ -1,0 +1,5 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: restart redis server
+  service: name=redis-server state=restarted
+  sudo: yes

@@ -1,0 +1,14 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: ensure supervisor config exists
+  template: src=supervisor.conf.j2 dest=/etc/supervisor/conf.d/celery.conf
+  sudo: yes
+  when: supervisor_enabled
+
+- name: ensure program is read by supervisor
+  supervisorctl: name=celery state=present
+  sudo: yes
+  notify:
+    - restart celery
+  when: supervisor_enabled
+

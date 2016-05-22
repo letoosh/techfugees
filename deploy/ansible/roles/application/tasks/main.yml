@@ -1,0 +1,21 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: install application dependencies
+  apt: pkg={{ item }} state=present
+  sudo: yes
+  with_items:
+    - gettext # possibly needed for translations in django
+    - binutils # binary making utils like gcc
+    - libjpeg-dev # needed by PIL (or Pillow) for 
+    - libxml2-dev # required by lxml
+    - libxslt1-dev # required by lxml
+    - ruby-sass # we should replace this with node-sass at some point
+    - libffi-dev # for OpenSSL
+
+
+- include: src.yml
+  when: application_repository_pull
+
+- include: wsgi.yml
+- include: virtualenv.yml
+- include: django.yml

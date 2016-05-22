@@ -1,0 +1,11 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: ensure backup script exists
+  template: src=postgresql_backup.sh.j2
+            dest=/etc/cron.daily/automysqlbackup
+            owner=root mode=0755
+  sudo: yes
+
+- name: ensure that correct permissions on .pgpass
+  template: src=pgpass.j2 dest=/root/.pgpass mode=0600
+  sudo: yes

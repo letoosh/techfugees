@@ -1,0 +1,8 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+# server or client, defaults to server
+rabbitmq_server: true
+rabbitmq_username: guest
+rabbitmq_password: guest
+rabbitmq_host: localhost
+rabbitmq_port: 5672

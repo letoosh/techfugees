@@ -1,0 +1,21 @@
+[program:webserver]
+{% if newrelic_enabled %}
+environment=NEW_RELIC_ENVIRONMENT={{ newrelic_environment }},NEW_RELIC_CONFIG_FILE={{ newrelic_config_file }}
+command={{ application_path_virtualenv }}/bin/newrelic-admin run-program {{ application_path_virtualenv }}/bin/uwsgi --ini {{ application_path_root }}/wsgi.ini
+{% else %}
+command={{ application_path_virtualenv }}/bin/uwsgi --ini {{ application_path_root }}/wsgi.ini
+{% endif %}
+user={{ application_user }}
+umask=0001
+killasgroup=true
+priority=10
+autorestart=true
+autostart=true
+stopsignal=INT
+startsecs=1
+startretries=3
+stopwaitsecs=10
+redirect_stderr=true
+directory={{ application_path_root }}
+stdout_logfile_maxbytes=10MB
+stdout_logfile={{ application_path_logs }}/webserver.log

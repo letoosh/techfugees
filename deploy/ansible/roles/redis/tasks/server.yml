@@ -1,0 +1,11 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: ensure server is installed
+  apt: pkg="redis-server" state=present
+  sudo: yes
+
+- name: ensure server is exposed to external clients
+  lineinfile: dest=/etc/redis/redis.conf state=present regexp="^#?bind" line="#bind 127.0.0.1"
+  sudo: yes
+  notify:
+    - restart redis server

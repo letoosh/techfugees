@@ -1,0 +1,16 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+# general
+nginx_enabled: true
+nginx_delete_default_vhost: true
+
+# repository
+nginx_repository_url: 'ppa:nginx/stable'
+
+# ssl
+nginx_ssl_enabled: false
+nginx_https_redirect: false
+nginx_ssl_crt_name: nginx.staging.crt
+nginx_ssl_key_name: nginx.staging.key
+
+

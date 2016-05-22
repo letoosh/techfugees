@@ -1,0 +1,95 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+# add leto proxy to speed up pip install and apt-get package downloading
+- name: ensure HTTP_PROXY is in vagrant's environment
+  lineinfile:
+    dest: /home/vagrant/.bashrc
+    line: "if ping -c 1 10.0.0.151 &> /dev/null\nthen\n  export https_proxy=http://10.0.0.151:3128/\n  export http_proxy=http://10.0.0.151:3128/\n  export HTTP_PROXY=http://10.0.0.151:3128/\n  export HTTPS_PROXY=http://10.0.0.151:3128/\n \nfi"
+  when: vagrant
+
+- name: ensure HTTP_PROXY is in root's environment
+  lineinfile:
+    dest: /root/.bashrc
+    line: "if ping -c 1 10.0.0.151 &> /dev/null\nthen\n  export https_proxy=http://10.0.0.151:3128/\n  export http_proxy=http://10.0.0.151:3128/\n  export HTTP_PROXY=http://10.0.0.151:3128/\n  export HTTPS_PROXY=http://10.0.0.151:3128/\n \nfi"
+  sudo: yes
+  when: vagrant
+  
+# we update the apt cache once here as the first thing and make the assumption 
+# that nothing is going to change while this ansible play is running.
+- name: update local apt cache 
+  apt: update-cache=yes
+  sudo: yes
+
+# set correct locale
+- name: generate locales
+  locale_gen: name={{ server_locale_lang }} state=present
+  sudo: yes 
+
+- name: ensure hostname is set correctly
+  hostname: name={{ server_hostname }}
+  sudo: yes
+  when: server_hostname
+
+- name: Use network time
+  apt: name=ntp state=present
+  sudo: yes
+
+# users
+- name: ensure application user group exists
+  group: name={{ application_group }}
+  sudo: yes
+
+- name: ensure application user exists
+  user: name={{ application_user}} groups={{ application_group }} 
+  register: application_user_creation
+  sudo: yes
+
+- name: ensure .ssh exists
+  file: path=/home/{{ application_user}}/.ssh state=directory
+  sudo: yes
+  sudo_user: "{{ application_user }}"
+
+- name: ensure app user sources venv on login
+  lineinfile:
+    dest: /home/{{ application_user }}/.bashrc
+    line: "source {{ application_path_virtualenv }}/bin/activate"
+  sudo: yes
+  sudo_user: "{{ application_user }}"
+
+- name: ensure app user changes to workdir on login
+  lineinfile:
+    dest: /home/{{ application_user }}/.bashrc
+    line: "cd {{ application_path_application }}"
+  sudo: yes
+  sudo_user: "{{ application_user }}"
+  
+# create common directories
+- name: ensure owner of content
+  file: state=directory group={{ application_group }} owner={{ application_user }} recurse=yes path={{ application_path_root }}
+  sudo: yes
+
+- name: create log folder
+  file: owner={{ application_user }} path={{ application_path_logs }} state=directory
+  sudo: yes
+
+# common programs
+- name: ensure git is installed
+  apt: name=git-core state=installed
+  sudo: yes
+
+- name: ensure python is installed
+  apt: name=python state=installed
+  sudo: yes
+
+- name: ensure python development headers are installed
+  apt: name=python-dev state=installed
+  sudo: yes
+
+- name: ensure pip is installed
+  apt: name=python-pip state=installed
+  sudo: yes
+
+- name: ensure httplib2 is installed
+  pip: name=httplib2 state=present
+  sudo: yes
+  

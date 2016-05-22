@@ -1,0 +1,7 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+# this is required to install psycopg2
+- name: ensure libpq development headers are installed
+  apt: name=libpq-dev state=installed
+  sudo: yes
+

@@ -1,0 +1,41 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: ensure supervisor config exists
+  template: src=supervisor.conf.j2 dest=/etc/supervisor/conf.d/webserver.conf
+  sudo: yes
+  when: supervisor_enabled
+
+- name: ensure config is read by supervisor
+  supervisorctl: name=webserver state=present
+  sudo: yes
+  notify:
+    - restart webserver
+  when: supervisor_enabled
+
+- name: ensure nginx vhost exists
+  template: src=vhost.j2 dest=/etc/nginx/sites-available/webserver
+  sudo: yes
+  notify: restart nginx
+  when: nginx_enabled
+
+- name: ensure nginx vhost is enabled
+  file: src=/etc/nginx/sites-available/webserver 
+        dest=/etc/nginx/sites-enabled/webserver
+        state=link
+  sudo: yes
+  notify: restart nginx
+  when: nginx_enabled
+
+- name: ensure nginx https redirect vhost exists
+  template: src=redirect.j2 dest=/etc/nginx/sites-available/redirect
+  sudo: yes
+  notify: restart nginx
+  when: nginx_enabled and nginx_https_redirect
+
+- name: ensure nginx https redirect vhost is enabled
+  file: src=/etc/nginx/sites-available/redirect 
+        dest=/etc/nginx/sites-enabled/redirect
+        state=link
+  sudo: yes
+  when: nginx_enabled and nginx_https_redirect
+  notify: restart nginx

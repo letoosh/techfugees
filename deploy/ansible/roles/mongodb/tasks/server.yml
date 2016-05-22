@@ -1,0 +1,30 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: ensure server package is installed
+  apt: pkg=mongodb-server state=installed
+  sudo: yes
+
+- name: ensure data directory exists
+  file: path="{{ mongodb_data_directory }}" state=directory owner=mongodb group=mongodb
+  sudo: yes
+
+- name: ensure server is storing data at root level
+  lineinfile:
+    dest: /etc/mongodb.conf
+    regexp: '^#?dbpath\s*='
+    line: "dbpath={{ mongodb_data_directory }}"
+    state: present
+    insertbefore: BOF
+  sudo: yes
+  notify: restart mongodb server
+
+- name: ensure server is listening to all ip addresses
+  lineinfile:
+    dest: /etc/mongodb.conf
+    regexp: '^bind_ip\s*='
+    state: absent
+  sudo: yes
+  notify: restart mongodb server
+
+
+- meta: flush_handlers

@@ -1,0 +1,14 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+# nginx
+nginx_https_redirect: false
+nginx_ssl_enabled: false
+nginx_server_name: nil
+nginx_upstream_enabled: false
+nginx_upstream_group: webserver
+nginx_upstream_servers: false
+
+# newrelic
+newrelic_enabled: false
+newrelic_enviroment: nil
+newrelic_config_file: nil

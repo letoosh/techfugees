@@ -1,0 +1,33 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+
+- name: add rabbitmq management plugin
+  rabbitmq_plugin: names=rabbitmq_management state=enabled
+  sudo: yes
+
+- name: clone monitering agent
+  git: 
+    repo: https://github.com/pivotalsoftware/newrelic_pivotal_agent.git 
+    version:0b14856792b47280e598b0275725a5ddefbee58a
+    dest:/opt/newrelic_pivotal_agent
+  sudo: yes
+
+- name: ensure bundler is installed
+  apt: pkg=bundler state=installed update-cache=yes
+  sudo: yes
+
+- name: install newrelic monitering agent
+  shell: bundle install chdir=/opt/newrelic_pivotal_agent creates=/opt/newrelic_pivotal_agent/Gemfile.lock
+  sudo: yes
+
+- name: copy monitering template
+  template: src=newrelic_plugin.yml dest=/opt/newrelic_pivotal_agent/config/newrelic_plugin.yml
+  sudo: yes
+
+- name: install upstart script
+  template: src=pivotal_agent-upstart.conf dest=/etc/init/pivotal_agent-upstart.conf mode=0644
+  sudo: 
+
+- name: link upstart script
+  file: src=/etc/init/pivotal_agent-upstart.conf dest=/etc/init.d/pivotal_agent-upstart state=link
+  when: newrelic is defined

@@ -1,0 +1,4 @@
+#!/bin/bash
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+cd $DIR/../../techfugees
+flake8 --filename=*.py --ignore=E501,E225,E226,E265,E401,F403 --exclude=migrations --max-complexity 12 .

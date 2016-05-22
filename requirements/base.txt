@@ -1,0 +1,45 @@
+# Bleeding edge Django
+Django==1.8.6
+django-assets==0.11
+django-bootstrap3==7.0.0
+jsmin==2.0.11
+cssmin==0.2.0
+
+
+# Configuration
+django-configurations==0.8
+django-secure==1.0
+
+# Forms
+django-braces==1.4.0
+
+# Models
+django-model-utils==2.2
+
+# images
+Pillow==2.6.0
+
+# For the persistance stores
+psycopg2==2.6.1
+
+# Unicode slugification
+unicode-slugify==0.1.1
+django-autoslug==1.7.2
+
+# Time zones support
+pytz==2014.7
+
+# django redis for sessions and cache
+django-redis==4.3.0
+
+# Project specific requirements
+dj-database-url==0.3.0
+django-postgrespool==0.3.0
+gunicorn==19.3.0
+SQLAlchemy==1.0.9
+wheel==0.24.0
+gspread==0.3.0
+oauth2client==2.0.2
+PyOpenSSL==16.0.0
+django-adminplus==0.5
+django-flat-theme==1.1.3

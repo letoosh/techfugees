@@ -1,0 +1,14 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+# server
+mongodb_server: yes
+mongodb_name: application
+mongodb_host: localhost
+mongodb_port: 27017
+
+# data
+mongodb_data_directory: /mongodb
+
+# repository
+mongodb_repository_key: '7F0CEB10'
+mongodb_repository_url: 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen'

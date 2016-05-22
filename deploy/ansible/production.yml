@@ -1,0 +1,23 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+
+- hosts: webservers
+
+  vars:
+    application_path_requirements: /srv/techfugees/requirements/production.txt
+    application_django_settings: techfugees.settings.production
+    nginx_enabled: true
+    nginx_ssl_enabled: true
+    nginx_https_redirect: true
+    supervisor_enabled: true
+    postgresql_backup_enabled: true
+    newrelic_enabled: true
+
+  roles:
+    - common
+    - postgresql
+    - redis
+    - application
+    - supervisor
+    - nginx
+    - webserver

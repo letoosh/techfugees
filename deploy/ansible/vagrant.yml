@@ -1,0 +1,28 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+
+- hosts: webservers
+
+  vars:
+    application_user: vagrant
+    database_password: mypassword
+    database_url: postgres://aiwip:{{ database_password }}@localhost:5432/aiwip
+    rabbitmq_password: helloworld
+    rabbitmq_url: amqp://aiwip:helloworld@localhost:5672//
+    redis_url: localhost:6379
+    application_path_virtualenv: /home/vagrant/.techfugees
+    application_path_requirements: /srv/techfugees/requirements/local.txt
+    django_settings: techfugees.settings.local
+    application_repository_pull: false
+    nginx_enabled: false
+    supervisor_enabled: false
+    server_hostname: techfugees-local
+
+
+  roles:
+    - common
+    - envvars
+    - postgresql
+    - redis
+    - application
+    - webserver

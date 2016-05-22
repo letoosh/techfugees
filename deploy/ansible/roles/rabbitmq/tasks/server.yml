@@ -1,0 +1,17 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: install server
+  apt: pkg=rabbitmq-server state=installed
+  sudo: yes
+
+- name: add application user
+  rabbitmq_user: 
+    user: "{{ rabbitmq_username }}"
+    password: "{{ rabbitmq_password }}"
+    vhost: /
+    configure_priv: .*
+    write_priv: .*
+    read_priv: .*
+    state: present
+    tags: administrator
+  sudo: yes

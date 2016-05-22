@@ -1,0 +1,39 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+#  This file contains project specific overwrites to default role variables.
+---
+vagrant: false
+
+application_name: techfugees
+application_user: techfugees
+application_group: techfugees
+application_path_root: /srv/techfugees
+application_path_logs: /var/log/techfugees
+application_path_virtualenv: /home/techfugees/.techfugees
+application_path_application: /srv/techfugees/techfugees
+application_path_requirements: /srv/techfugees/requirements/base.txt
+
+application_repository_url: git@github.com:letoosh/techfugees.git
+
+application_django_settings: techfugees.settings.base
+
+server_locale_lang: en_US.UTF-8
+server_hostname: techfugees
+
+nginx_enabled: false
+nginx_server_name: wk-techfugees.herokuapp.com
+
+mongodb_server: false
+mongodb_name: techfugees
+
+postgresql_server: true
+postgresql_database_name: "techfugees"
+postgresql_database_user: "techfugees"
+postgresql_database_secret: "fhew423aok4212da95l1sn"
+
+postgresql_backup_user: "{{ application_user }}"
+postgresql_backup_secret: "{{ application_user }}"
+postgresql_backup_databases: techfugees
+
+redis_server: true
+
+newrelic_enabled: false

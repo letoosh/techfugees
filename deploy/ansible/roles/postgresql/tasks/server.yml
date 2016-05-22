@@ -1,0 +1,161 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+# INSTALL
+# -------
+- name: ensure server is installed
+  apt: pkg={{ item }}-{{ postgresql_version }} state=installed
+  with_items:
+    - postgresql
+    - postgresql-contrib
+  sudo: yes
+
+# this is required for ansible to talk to postgres, you should still install
+# psycopg2 in your virtualenv
+- name: ensure psycopg2 is installed 
+  apt: pkg=python-psycopg2 state=installed
+  sudo: yes
+
+# DATA
+# ----
+- name: ensure data directory exists
+  file: path=/postgresql owner=postgres group=postgres state=directory
+  sudo: yes
+  notify: 
+    - restart postgresql server
+  register: postgresql_data_directory_exists
+
+- name: ensure that data directory is ready for postgres data
+  command: "/usr/lib/postgresql/9.4/bin/pg_ctl -D {{ postgresql_data_directory }} initdb"
+  sudo: yes
+  sudo_user: postgres
+  notify: 
+    - restart postgresql server
+  when: postgresql_data_directory_exists | changed
+
+- name: ensure writes to correct directory
+  lineinfile: 
+    dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+    line: "data_directory = '{{ postgresql_data_directory }}'"
+    regexp: '^#?data_directory'
+  sudo: yes
+  register: postgres_writing_to_new_directory
+  sudo_user: postgres
+  notify: 
+    - restart postgresql server
+
+- name: ensure old postgresql processes are killed after data dir change
+  command: killall postgres
+  sudo: yes
+  when: postgres_writing_to_new_directory|changed
+
+# ACCESS
+# ------
+# this is required if the the server is going to except external calls
+- name: ensure server is exposed to external clients
+  lineinfile:
+    dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+    regexp: 'host\s+all\s+all\s+127.0.0.1/32\s+md5'
+    line: "host {{ postgresql_database_name }} {{ postgresql_database_user }} 0.0.0.0/0 md5"
+  sudo: yes
+  notify: 
+    - restart postgresql server
+
+
+- name: ensure local access to application database requires password
+  lineinfile:
+    dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+    line: local {{ postgresql_database_name }} {{ postgresql_database_user }} md5
+  sudo: yes
+  notify: 
+    - restart postgresql server
+
+- name: ensure local users can enter databases not owned by their system user
+  lineinfile:
+    dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+    line: host all all 127.0.0.1/32 md5
+  sudo: yes
+  notify: 
+    - restart postgresql server
+
+# CONFIG
+# ------
+- name: ensure listening to external clients in config
+  lineinfile: 
+    dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+    line: listen_addresses = '0.0.0.0'
+    regexp: '^#?listen_address'
+  sudo: yes
+  sudo_user: postgres
+  notify: 
+    - restart postgresql server
+
+- name: ensure client_encoding is UTF8 in config
+  lineinfile: 
+    dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+    line: client_encoding = 'UTF8'
+    regexp: '^#?client_encoding'
+    insertafter: EOF
+  sudo: yes
+  sudo_user: postgres
+  notify: 
+    - restart postgresql server
+
+# NOTE: The below settings should be adjusted relative to the target systems
+# resoures. The defaults are aimed at a 512MB server
+- name: ensure resource optimisation settings are present in config
+  lineinfile: 
+    dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+    line: "{{ item.name }} = {{ item.value }}"
+    regexp: '^#?{{ item.name }}'
+  with_items:
+
+  # in postgresql >= 9.3 this should be around %15-25 of total RAM,
+  # in postgresl <= 9.2 this should not exceed 32MB read more here:
+  # https://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server#shared_buffers
+  - name: shared_buffers
+    value: "{{ postgresql_config_shared_buffers }}"
+
+  # this sets how much memory is used when doing complex sorts per connection.
+  # as such this sould be set in conjunction with max_queries relative to the
+  # amount of RAM on the system. Read more here:
+  # https://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server#work_mem
+  - name: work_mem
+    value: "{{ postgresql_config_work_mem }}"
+
+  # these adjust the amount of time and memory used to write logs. Read more:
+  # https://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server#checkpoint_segments_checkpoint_completion_target
+  - name: checkpoint_segments
+    value: "{{ postgresql_config_checkpoint_segments }}"
+  - name: checkpoint_completion_target
+    value: "{{ postgresql_config_checkpoint_completion_target }}"
+
+  # effective cache size is the estimate of how much disk space will be
+  # available for database caching. 50-75% of total RAM is a reasonable setting
+  # Read more: https://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server#effective_cache_size
+  - name: effective_cache_size
+    value: "{{ postgresql_config_effective_cache_size }}"
+  sudo: yes
+  sudo_user: postgres
+  notify: 
+    - restart postgresql server
+
+# we want to restart postgresql now as apposed to the end of all tasks in all
+# roles, beacause later roles might depend on this.
+- meta: flush_handlers
+
+# DATABASE
+# --------
+- name: create user
+  postgresql_user: name={{ postgresql_database_user }}
+                   password={{ postgresql_database_secret }} 
+                   role_attr_flags=CREATEDB,NOSUPERUSER
+  sudo: yes
+  sudo_user: "{{ postgresql_user }}"
+
+- name: create database
+  postgresql_db: name={{ postgresql_database_name }}
+                 owner={{ postgresql_database_user }}
+                 encoding='UTF-8' lc_collate={{ server_locale_lang }} 
+                 lc_ctype={{ server_locale_lang }} template='template0'
+  sudo: yes
+  sudo_user: "{{ postgresql_user }}"

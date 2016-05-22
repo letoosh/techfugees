@@ -1,0 +1,28 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: ensure repository key is added to apt
+  apt_key: url='{{ postgresql_repository_key }}' state=present
+  sudo: yes
+  register: postgresql_repository_key_added
+
+- name: ensure repository is added to apt
+  apt_repository: repo='{{ postgresql_repository_url }}' state=present
+  sudo: yes
+  register: postgresql_repository_url_added
+
+- name: ensure apt-cache is updated
+  apt: update-cache=true
+  sudo: yes
+  when: 
+    - postgresql_repository_url_added|changed
+    - postgresql_repository_url_added|success
+    - postgresql_repository_key_added|changed
+    - postgresql_repository_key_added|success
+
+- include: client.yml
+
+- include: server.yml
+  when: postgresql_server
+
+- include: backups.yml
+  when: postgresql_backup_enabled

@@ -1,0 +1,20 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+
+- hosts: webservers
+
+  vars:
+    application_path_requirements: /srv/techfugees/requirements/staging.txt
+    application_django_settings: techfugees.settings.staging
+    nginx_enabled: true
+    supervisor_enabled: true
+    server_hostname: techfugees-staging
+
+  roles:
+    - common
+    - postgresql
+    - redis
+    - application
+    - supervisor
+    - nginx
+    - webserver

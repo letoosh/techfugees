@@ -1,0 +1,13 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: ensure virtualenv package is installed
+  pip: name=virtualenv
+  sudo: yes
+
+- name: ensure python modules are installed
+  pip:
+    requirements: "{{ application_path_requirements }}"
+    virtualenv: "{{ application_path_virtualenv }}"
+    state: present
+  sudo: yes
+  sudo_user: "{{application_user}}"

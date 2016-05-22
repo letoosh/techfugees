@@ -1,0 +1,4 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+server_locale_lang: en_US.UTF-8
+server_hostname: false

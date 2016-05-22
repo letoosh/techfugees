@@ -1,0 +1,26 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+# users
+application_name: application
+application_user: application
+application_group: application
+
+# paths
+application_path_root: "/srv/application"
+application_path_logs: "/var/log/application"
+application_path_virtualenv: "/home/application/.application"
+application_path_application: "/srv/application/application" 
+application_path_requirements: "{{ application_path_root }}/requirements.txt"
+
+# code
+application_repository_url: nil
+application_repository_branch: master
+application_repository_pull: true
+
+# django
+application_django_version: 1.7
+application_django_settings: settings
+application_django_static: true
+application_django_assets: true
+application_django_syncdb: false
+application_django_south: false

@@ -1,0 +1,29 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: ensure DJANGO_SETTINGS_MODULE is in environment
+  lineinfile:
+    dest: /home/{{ application_user }}/.bashrc
+    line: "export DJANGO_SETTINGS_MODULE={{ django_settings }}"
+  sudo: yes
+  sudo_user: "{{ application_user }}"
+
+- name: ensure DATABASE_URL is in environment
+  lineinfile:
+    dest: /home/{{ application_user }}/.bashrc
+    line: "export DATABASE_URL={{ database_url }}"
+  sudo: yes
+  sudo_user: "{{ application_user }}"
+
+- name: ensure RABBITMQ_URL is in environment
+  lineinfile:
+    dest: /home/{{ application_user }}/.bashrc
+    line: "export RABBITMQ_URL={{ rabbitmq_url }}"
+  sudo: yes
+  sudo_user: "{{ application_user }}"
+
+- name: ensure REDIS_URL is in environment
+  lineinfile:
+    dest: /home/{{ application_user }}/.bashrc
+    line: "export REDIS_URL={{ redis_url }}"
+  sudo: yes
+  sudo_user: "{{ application_user }}"

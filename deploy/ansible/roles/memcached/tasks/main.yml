@@ -1,0 +1,11 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: ensure package is installed
+  apt: pkg=memcached state=installed
+  sudo: yes
+
+- name: ensure externally accessible 
+  lineinfile: dest=/etc/memcached.conf regexp='^-l\s' line='-l 0.0.0.0' insertafter=EOF
+  notify: restart memcached
+  sudo: yes
+  when: memcached_external_access

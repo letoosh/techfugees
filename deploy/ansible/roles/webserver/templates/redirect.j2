@@ -1,0 +1,10 @@
+server {
+    server_name www.{{ nginx_server_name }};
+    return 301 https://{{ nginx_server_name }}$request_uri;
+}
+
+server {
+    server_name {{ nginx_server_name }};
+    listen *:80;
+    return 301 https://$host$request_uri;
+}

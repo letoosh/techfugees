@@ -1,0 +1,53 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: ensure all static files are collected
+  django_manage: 
+    app_path: "{{ application_path_application }}"
+    command: "collectstatic --noinput"
+    virtualenv: "{{ application_path_virtualenv }}"
+    settings: "{{ application_django_settings}}"
+  sudo: yes
+  sudo_user: "{{ application_user }}"
+  when: application_django_static
+
+- name: ensure dynamic assets are built
+  django_manage: 
+    app_path: "{{ application_path_application }}"
+    command: "assets build"
+    virtualenv: "{{ application_path_virtualenv }}"
+    settings: "{{ application_django_settings }}"
+  sudo: yes
+  sudo_user: "{{ application_user }}"
+  when: application_django_assets
+
+# this depreciated with django >= 1.7
+- name: ensure the database is syncronised with application models
+  django_manage: 
+    app_path: "{{ application_path_application }}"
+    command: "syncdb --all --noinput"
+    virtualenv: "{{ application_path_virtualenv }}"
+    settings: "{{ application_django_settings }}"
+  sudo: yes
+  sudo_user: "{{ application_user }}"
+  when: application_django_version|version_compare('1.7', '<') and application_django_syncdb
+
+- name: ensure database is migrated to current version (django)
+  django_manage: 
+    app_path: "{{ application_path_application }}"
+    command: "migrate --noinput"
+    virtualenv: "{{ application_path_virtualenv }}"
+    settings: "{{ application_django_settings }}"
+  sudo: yes
+  sudo_user: "{{ application_user }}"
+  when: application_django_version|version_compare('1.7', '>=') and not application_django_south
+
+# TODO: this probably doesn't want to be faked everytime right?!?
+- name: ensure database is migrated to current version (faked!) (south)
+  django_manage: 
+    app_path: "{{ application_path_application }}"
+    command: "migrate --all --fake --noinput"
+    virtualenv: "{{ application_path_virtualenv }}"
+    settings: "{{ application_django_settings }}"
+  sudo: yes
+  sudo_user: "{{ application_user }}"
+  when: application_django_south

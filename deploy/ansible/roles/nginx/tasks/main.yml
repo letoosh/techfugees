@@ -1,0 +1,42 @@
+#  vi: set ft=ansible.yaml ts=2 sw=2 tw=0 :
+---
+- name: ensure nginx stable ppa exists
+  apt_repository: repo='{{ nginx_repository_url }}' state=present
+  register: nginx_repository_url_added
+  sudo: yes
+
+- name: ensure apt-cache is updated
+  apt: update-cache=true
+  sudo: yes
+  when:
+    - nginx_repository_url_added|changed
+    - nginx_repository_url_added|success
+
+- name: ensure package is installed
+  apt: name=nginx state=present
+  sudo: yes
+  when: nginx_enabled
+
+- name: make nginx ssl directory
+  file: path=/etc/nginx/ssl/ state=directory
+  sudo: yes
+  notify: restart nginx
+  when: nginx_enabled and nginx_ssl_enabled
+
+- name: copy over nginx ssl crt file
+  copy: src={{ nginx_ssl_crt_name }} dest=/etc/nginx/ssl/nginx.crt
+  sudo: yes
+  notify: restart nginx
+  when: nginx_enabled and nginx_ssl_enabled
+
+- name: copy over ngnix ssl key file
+  copy: src={{ nginx_ssl_key_name }} dest=/etc/nginx/ssl/nginx.key
+  sudo: yes
+  notify: restart nginx
+  when: nginx_enabled and nginx_ssl_enabled
+
+- name: delete default vhost
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  sudo: yes
+  notify: restart nginx
+  when: nginx_delete_default_vhost
