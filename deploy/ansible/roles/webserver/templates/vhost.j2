@@ -60,7 +60,7 @@ server {
     }
 
     location /static {
-      alias {{ application_path_root }}/staticfiles;
+      alias {{ application_path_application }}/staticfiles;
       expires 12h;
       add_header Pragma "public";
       add_header Cache-Control  "public, must-revalidate, proxy-revalidate";
@@ -68,7 +68,7 @@ server {
     }
 
     location /media {
-        alias {{ application_path_root }}/mediafiles;
+        alias {{ application_path_application }}/mediafiles;
         expires 1h;
         break;
     }
