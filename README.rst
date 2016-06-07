@@ -5,6 +5,8 @@ An interactive map to display refugee data
 
 Live testing version can be found here: http://techfugees-map.letoosh.com/map
 
+Data for the map is in this Google Spreadsheet: https://docs.google.com/spreadsheets/d/1xNZLy3msiWZQ-O6wDwmdi9JqCWb-0E-RBV5B1FFXQMs/edit
+
 
 
 Settings
