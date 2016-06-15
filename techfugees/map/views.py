@@ -28,7 +28,11 @@ def queryByStartCity(request, slug1, slug2):
         slug1 = slug1.replace("-", " ")
     if "-" in slug2:
         slug2 = slug2.replace("-", " ")
-    trips = Trip.objects.filter(start_country = slug1, start = slug2)
+
+    #trips = Trip.objects.filter(start_country = slug1, start = slug2)
+    # show any start city in the given country
+
+    trips = Trip.objects.filter(start_country = slug1)
 
     countries = {}
     for trip in trips:
