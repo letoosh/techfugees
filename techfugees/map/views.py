@@ -37,6 +37,7 @@ def queryByStartCity(request, slug1, slug2):
     countries = {}
     for trip in trips:
         trip.service = trip.service.strip()
+        trip.end = trip.end.strip()
         if trip.service == "Unclear":
             trip.service = "Unknown"
         if trip.start_country != trip.end_country:
