@@ -5,13 +5,12 @@ body {
 }
 p {
 	color: #00e600;
-	font-weight: bold;
 	font-size: 18px;
 }
 
 h1, h2 {
 	text-align: center;
-	font-family: 'Courier New';
+	font-family: HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, "Lucida Grande", sans-serif;
 	color: white;
 }
 
@@ -33,7 +32,7 @@ h3 {
 
 label {
 	color: white;
-	font-family: 'Courier New';
+	font-family: HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
 #itinerary {
@@ -107,42 +106,46 @@ ul {
 
 #startOver, #downloadCSV {
 	margin: 0px auto 0px auto;
-	background-color: #cccccc; 
+	background-color: #fff;
 	border: none;
 	text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
-    font-family: 'Courier New';
-    padding: 10px 10px;
-     -moz-border-radius: 15px;
- 	 -webkit-border-radius: 15px;
+    font-size: 14px;
+	font-weight: normal;
+	font-family: HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, "Lucida Grande", sans-serif;
+    padding: 15px 20px;
+	border-radius: 30px;
+     -moz-border-radius: 30px;
+ 	 -webkit-border-radius: 30px;
   	border: 5px solid #614B79;
   	outline: none;
 
-   	background-image: -webkit-linear-gradient(top, #cccccc, #b3b1b3);
-  	background-image: -moz-linear-gradient(top, #cccccc, #b3b1b3);
-  	background-image: -ms-linear-gradient(top, #cccccc, #b3b1b3);
-  	background-image: -o-linear-gradient(top, #cccccc, #b3b1b3);
-  	background-image: linear-gradient(to bottom, #cccccc, #b3b1b3);
+   	/*background-image: -webkit-linear-gradient(top, #cccccc, #b3b1b3);*/
+  	/*background-image: -moz-linear-gradient(top, #cccccc, #b3b1b3);*/
+  	/*background-image: -ms-linear-gradient(top, #cccccc, #b3b1b3);*/
+  	/*background-image: -o-linear-gradient(top, #cccccc, #b3b1b3);*/
+  	/*background-image: linear-gradient(to bottom, #cccccc, #b3b1b3);*/
 
 }
 
 #startOver:hover, #downloadCSV:hover  {
-  	background-image: -webkit-linear-gradient(top, #ffc700, #cc9e00);
-  	background-image: -moz-linear-gradient(top, #ffc700, #cc9e00);
-  	background-image: -ms-linear-gradient(top, #ffc700, #cc9e00);
-  	background-image: -o-linear-gradient(top, #ffc700, #cc9e00);
-  	background-image: linear-gradient(to bottom, #ffc700, #cc9e00);
+	background-color: #ccc;
+  	/*background-image: -webkit-linear-gradient(top, #ffc700, #cc9e00);*/
+  	/*background-image: -moz-linear-gradient(top, #ffc700, #cc9e00);*/
+  	/*background-image: -ms-linear-gradient(top, #ffc700, #cc9e00);*/
+  	/*background-image: -o-linear-gradient(top, #ffc700, #cc9e00);*/
+  	/*background-image: linear-gradient(to bottom, #ffc700, #cc9e00);*/
   	text-decoration: none;
 }
 
 #startOver:active, #downloadCSV:active  {
-	background-image: -webkit-linear-gradient(top, #cc9e00, #997700);
-  	background-image: -moz-linear-gradient(top, #cc9e00, #997700);
-  	background-image: -ms-linear-gradient(top, #cc9e00, #997700);
-  	background-image: -o-linear-gradient(top, #cc9e00, #997700);
-  	background-image: linear-gradient(to bottom, #cc9e00, #997700);
+	background-color: #ddd;
+	/*background-image: -webkit-linear-gradient(top, #cc9e00, #997700);*/
+  	/*background-image: -moz-linear-gradient(top, #cc9e00, #997700);*/
+  	/*background-image: -ms-linear-gradient(top, #cc9e00, #997700);*/
+  	/*background-image: -o-linear-gradient(top, #cc9e00, #997700);*/
+  	/*background-image: linear-gradient(to bottom, #cc9e00, #997700);*/
   	text-decoration: none;
 }
 
@@ -163,7 +166,7 @@ ul {
 #itineraryList {
 	color: white;
 	font-size: 16px;
-	font-family: 'Courier New';
+	font-family: HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, "Lucida Grande", sans-serif;
 	list-style-type: none;
 }
 

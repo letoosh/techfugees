@@ -16,7 +16,7 @@ function Country (leafletMap, countryName, coordinates, polygonType) {
     else {
       return L.multiPolygon(coordinates);
     }
-  }
+  };
 
   this.getPolygonCenter = function () {
     // hardcoded because multipolygon center formula didn't work, looking for better solution
@@ -26,7 +26,7 @@ function Country (leafletMap, countryName, coordinates, polygonType) {
     else {
       return polygon.getBounds().getCenter();
     }
-  }
+  };
 
   var polygon = createPolygon();
   this.tripDetails = null;
@@ -36,7 +36,7 @@ function Country (leafletMap, countryName, coordinates, polygonType) {
   // Refactor code to delete this?
   this.setTripDetails = function(details) {
     this.tripDetails = details;
-  }
+  };
 
   this.reversePolygon = function() {
     if (polygonType === "Polygon") {
@@ -45,7 +45,7 @@ function Country (leafletMap, countryName, coordinates, polygonType) {
     else {
       polygon = L.multiPolygon(reverseCoordinates(coordinates), {clickable: false});
     }
-  }
+  };
 
   var highlight = function(style) {
     polygon.setStyle($.extend({
@@ -62,14 +62,18 @@ function Country (leafletMap, countryName, coordinates, polygonType) {
   this.getMarker = function() {
     var marker = new L.marker(this.getPolygonCenter());
     return marker;
-  }
+  };
 
   this.highlightGreen = function() {
     this.state = 'green';
+    var opacity = 0.1;
+    if (this.tripDetails)
+      opacity = Math.log(1 + this.tripDetails._meta.average / 500) / 4 + 0.1;
+    console.log(opacity);
     highlight({
       color: 'green',
       weight: 2,
-      fillOpacity: .1
+      fillOpacity: opacity
     });
   };
 
@@ -89,22 +93,22 @@ function Country (leafletMap, countryName, coordinates, polygonType) {
       weight: 2,
       fillOpacity: .2
     });
-  }
+  };
 
   this.closePricePopUp = function() {
     leafletMap.closePopup()
-  }
+  };
 
   this.addPricePopUp = function() {
     cities = Object.keys(this.tripDetails);
-    modesOfTransport = []
+    modesOfTransport = [];
     for (var i=0; i<cities.length;i++) {
       modesOfTransport.push(Object.keys(this.tripDetails[cities[i]]))
     }
     var mergedModesOfTransport = [].concat.apply([], modesOfTransport);
-    mergedModesOfTransport = this.unique(mergedModesOfTransport).join().replace(/,/g, ", ")
-    polygon.bindPopup("Modes of Transport to " + this.name + ": " + mergedModesOfTransport, {offset: new L.Point(0, -30)}).openPopup();
-  }
+    mergedModesOfTransport = this.unique(mergedModesOfTransport).join().replace(/,/g, ", ");
+    //polygon.bindPopup("Modes of Transport to " + this.name + ": " + mergedModesOfTransport, {offset: new L.Point(0, -30)}).openPopup();
+  };
 
   this.unique = function(lst) {
     var result = [];
@@ -113,4 +117,4 @@ function Country (leafletMap, countryName, coordinates, polygonType) {
     });
     return result;
   }
-};
+}

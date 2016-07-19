@@ -59,11 +59,15 @@ def queryByStartCity(request, slug1, slug2):
                     countries[trip.end_country][trip.end] = {trip.service: {trip.year: [trip.USD_equiv_avg]}}
 
     for key, value in countries.iteritems():
+        averages = []
         for keyEnd, valueEnd in countries[key].iteritems():
             for keyService, valueService in countries[key][keyEnd].iteritems():
                 for keyYear, valueYear in countries[key][keyEnd][keyService].iteritems():
                     pricesAsIntegers = [int(re.sub("\D", "", i)) for i in valueYear]
                     avgPrice = int(sum(pricesAsIntegers))/len(pricesAsIntegers) if len(pricesAsIntegers) > 0 else float('nan')
                     countries[key][keyEnd][keyService][keyYear] = avgPrice
+                    averages.append(avgPrice)
+        countries[key]['_meta'] = {'average': sum(averages) / len(averages) }
+
     return HttpResponse(json.dumps(countries))
 
